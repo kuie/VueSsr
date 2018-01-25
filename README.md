@@ -1,6 +1,6 @@
-# {{ name }}
+# VueSsr
 
-> {{ description }}
+> This is a ssr Vue project power by NUXT
 
 ## Build Setup
 
