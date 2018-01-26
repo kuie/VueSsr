@@ -117,9 +117,10 @@ const start = async () => {
   const index = __webpack_require__(10);
   const loginRegister = __webpack_require__(11);
   const start = __webpack_require__(12);
+  const data1 = __webpack_require__(13);
 
   // Import and Set Nuxt.js options
-  let config = __webpack_require__(13);
+  let config = __webpack_require__(14);
   config.dev = !(app.env === 'production');
 
   // Instantiate nuxt.js
@@ -138,7 +139,10 @@ const start = async () => {
   app.use(json());
   app.use(logger());
   app.use(async (ctx, next) => {
+    console.log(ctx.isClient);
     if (/^\/api/.test(ctx.request.url)) {
+      next();
+    } else if (/api\//.test(ctx.request.url)) {
       next();
     } else {
       await next();
@@ -153,6 +157,8 @@ const start = async () => {
       });
     }
   });
+
+  app.use(data1.routes(), data1.allowedMethods());
   app.use(index.routes(), index.allowedMethods());
   app.use(loginRegister.routes(), loginRegister.allowedMethods());
   app.use(start.routes(), start.allowedMethods());
@@ -210,9 +216,18 @@ const router = __webpack_require__(1)();
 const path = __webpack_require__(0);
 const util = __webpack_require__(2);
 router.prefix(path.format({ root: '/', name: 'api' }));
-router.post(path.format({ root: '/', name: 'json' }), async ctx => {
-  ctx.response.body = 1;
-  ctx.body = { code: 200 };
+router.all(path.format({ root: '/', name: 'json' }), async ctx => {
+  ctx.body = {
+    code: 200,
+    data: {
+      name: 'zp+field',
+      Color: 'rab(33,33,33)',
+      loading: true
+    },
+    name: 'zp+field',
+    Color: 'rab(33,33,33)',
+    loading: true
+  };
 });
 module.exports = router;
 
@@ -262,6 +277,23 @@ module.exports = router;
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+const router = __webpack_require__(1)();
+const path = __webpack_require__(0);
+const util = __webpack_require__(2);
+router.prefix(path.format({ root: '/', name: 'api' }));
+router.get(path.format({ root: '/', name: 'data1' }), async ctx => {
+  console.log(123);
+  ctx.body = { name: 1231 };
+});
+module.exports = router;
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = {

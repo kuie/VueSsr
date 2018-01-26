@@ -20,6 +20,7 @@ const start = async () => {
   const index = require('./api/index')
   const loginRegister = require('./api/login&register')
   const start = require('./api/start')
+  const data1 = require('./api/data1')
 
   // Import and Set Nuxt.js options
   let config = require('../nuxt.config.js')
@@ -41,7 +42,10 @@ const start = async () => {
   app.use(json());
   app.use(logger());
   app.use(async (ctx, next) => {
+    console.log(ctx.isClient)
     if (/^\/api/.test(ctx.request.url)) {
+      next()
+    } else if (/api\//.test(ctx.request.url)) {
       next()
     } else {
       await next()
@@ -56,6 +60,9 @@ const start = async () => {
       })
     }
   })
+
+
+  app.use(data1.routes(), data1.allowedMethods())
   app.use(index.routes(), index.allowedMethods())
   app.use(loginRegister.routes(), loginRegister.allowedMethods())
   app.use(start.routes(), start.allowedMethods())

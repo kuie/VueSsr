@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
     <div class="loadingBox" v-if="loading">
+      <div>{{name}}</div>
+
       <svg viewBox="25 25 50 50">
         <circle class="path" cx="50" cy="50" r="25" :fill="Color" fill-opacity=".2"></circle>
         <circle class="path" cx="50" cy="50" r="20" :fill="Color" fill-opacity=".2"></circle>
@@ -22,19 +24,21 @@
 </template>
 <script>
   'use strict'
-  import { axios } from '../util/fetch'
+  import { axios, post } from '../util/fetch'
 
   export default {
     name: 'start',
-    data() {
-      return {
-        Color: 'rab(33,33,33)',
-        loading: true
-      }
+    asyncData() {
+      return axios.get('/api/json').then(res => {
+        return { Color: 'rgb(0,255,255)', loading: true, name: '成功了' }
+      }).catch(err => {
+        console.log(err)
+        return { Color: 'rgb(255,0,0)', loading: true, name: '失败了' }
+      })
     },
     methods: {
       submit() {
-        axios.post('/api/json', { a: 1, b: 2 }).then(res => {
+        post('/api/json', { a: 1, b: 2 }).then(res => {
           console.log(res)
         }).catch(err => {
           console.log(err)
