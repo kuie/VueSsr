@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import { Nuxt, Builder } from 'nuxt'
+import path from 'path'
 
 const start = async () => {
   const app = new Koa()

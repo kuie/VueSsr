@@ -2,10 +2,8 @@
 const router = require('koa-router')();
 const path = require('path');
 const util = require('util');
-router.prefix('/api/start');
-
-router.all('/data', async ctx => {
-  util.log(ctx.request.body)
+router.prefix(path.format({ root: '/api', name: 'start' }));
+router.all(path.format({ root: '/', name: 'data' }), async ctx => {
   ctx.body = {
     code: 200,
     msg: '获取成功！',

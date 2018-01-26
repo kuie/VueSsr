@@ -18,9 +18,6 @@
       <nuxt-link :to="{path:'/user/123223'}" class="el-button el-button--success">user/:id</nuxt-link>
       <el-button type="primary" @click="submit">提交测试</el-button>
     </div>
-    <ol>
-      <li v-for="item in data">{{item.val}}</li>
-    </ol>
   </div>
 </template>
 <script>

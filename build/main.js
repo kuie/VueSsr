@@ -69,13 +69,13 @@ module.exports =
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("koa-router");
+module.exports = require("path");
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("path");
+module.exports = require("koa-router");
 
 /***/ }),
 /* 2 */
@@ -93,6 +93,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_koa__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nuxt__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_nuxt__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_path__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_path__);
+
 
 
 
@@ -203,24 +206,11 @@ module.exports = require("koa-logger");
 "use strict";
 
 
-const router = __webpack_require__(0)();
-const path = __webpack_require__(1);
+const router = __webpack_require__(1)();
+const path = __webpack_require__(0);
 const util = __webpack_require__(2);
-router.prefix('/api');
-router.get('/', async ctx => {
-  ctx.body = '测试';
-});
-
-router.get('/string', async (ctx, next) => {
-  ctx.body = 'koa2 string';
-});
-
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json'
-  };
-});
-router.post('/json', async ctx => {
+router.prefix(path.format({ root: '/', name: 'api' }));
+router.post(path.format({ root: '/', name: 'json' }), async ctx => {
   ctx.response.body = 1;
   ctx.body = { code: 200 };
 });
@@ -233,19 +223,19 @@ module.exports = router;
 "use strict";
 
 
-const router = __webpack_require__(0)();
-const path = __webpack_require__(1);
+const router = __webpack_require__(1)();
+const path = __webpack_require__(0);
 const util = __webpack_require__(2);
 // const db = require('../DB')
-router.prefix('/api');
+router.prefix(path.format({ root: '/', name: 'api' }));
 
-router.post('/login', async ctx => {
+router.post(path.format({ root: '/', name: 'login' }), async ctx => {
   ctx.body = { code: 200, msg: '登陆成功！' };
 });
-router.post('/register', async ctx => {
+router.post(path.format({ root: '/', name: 'register' }), async ctx => {
   ctx.body = { code: 200, msg: '注册成功！' };
 });
-router.post('/logout', async ctx => {
+router.post(path.format({ root: '/', name: 'logout' }), async ctx => {
   ctx.body = { code: 200, msg: '退出登录！' };
 });
 module.exports = router;
@@ -257,13 +247,11 @@ module.exports = router;
 "use strict";
 
 
-const router = __webpack_require__(0)();
-const path = __webpack_require__(1);
+const router = __webpack_require__(1)();
+const path = __webpack_require__(0);
 const util = __webpack_require__(2);
-router.prefix('/api/start');
-
-router.all('/data', async ctx => {
-  util.log(ctx.request.body);
+router.prefix(path.format({ root: '/api', name: 'start' }));
+router.all(path.format({ root: '/', name: 'data' }), async ctx => {
   ctx.body = {
     code: 200,
     msg: '获取成功！',
