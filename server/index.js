@@ -1,6 +1,5 @@
 import Koa from 'koa'
-import { Nuxt, Builder } from 'nuxt'
-import path from 'path'
+import { Builder, Nuxt } from 'nuxt'
 
 const start = async () => {
   const app = new Koa()
@@ -42,10 +41,9 @@ const start = async () => {
   app.use(json());
   app.use(logger());
   app.use(async (ctx, next) => {
-    console.log(ctx.isClient)
-    if (/^\/api/.test(ctx.request.url)) {
+    if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
       next()
-    } else if (/api\//.test(ctx.request.url)) {
+    } else if (/asyncData[\/\\]+/.test(ctx.request.url)) {
       next()
     } else {
       await next()

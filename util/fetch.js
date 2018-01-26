@@ -48,13 +48,28 @@ export const _fetch = (url, method, paramsObj) => {
 /* 仅限asyncData方法调用的基于axios的异步交互方式 */
 _axios.defaults.timeout = 5000
 _axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-// _axios.defaults.baseURL = 'https://localhost:3000/'
 export const axios = {
   post(url, data) {
-    return _axios.post(pathReturn(url), data)
+    return _axios({
+      method: 'post',
+      url: pathReturn(url),
+      data: data,
+      proxy: {
+        host: '127.0.0.1',
+        port: 3000
+      }
+    })
   },
   get(url, data) {
-    return _axios.get(pathReturn(url), data)
+    return _axios({
+      method: 'get',
+      url: pathReturn(url),
+      data: data,
+      proxy: {
+        host: '127.0.0.1',
+        port: 3000
+      }
+    })
   },
   all(array) {
     return _axios.all(array)

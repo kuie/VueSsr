@@ -29,7 +29,7 @@
   export default {
     name: 'start',
     asyncData() {
-      return axios.get('/api/json').then(res => {
+      return axios.get('/asyncData/api/json').then(res => {
         return { Color: 'rgb(0,255,255)', loading: true, name: '成功了' }
       }).catch(err => {
         console.log(err)
