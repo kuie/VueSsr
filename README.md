@@ -48,9 +48,9 @@ koa2的语法比express简单一些，主要是上下文对象从原来的res，
 
 静态文件---> static
 
-layouts--->模板
+布局--->layouts
 
-components--->组件
+组件--->components
 
 乱七八糟的其他资源--->assets
 
@@ -58,7 +58,7 @@ API--->自己加的存放一些API接口，方便查阅修改
 
 util-->我自己加的存放一些公共方法比如filter...selectList啥的总会用到
 
-build--->动一动就天翻地覆..其实因为我不怎么会...
+build--->根据 backpack.config.js文件生成
 
 项目的报错有些尴尬。。。一般出现不明所以的报错请先检查一下asyncDate或者fetch这些服务器异步方法
 可能是这些方法出错了导致页面就没有render回来
@@ -101,3 +101,5 @@ import { Nuxt, Builder } from 'nuxt'
 2. 莫名其妙的报错 可能是因为引入了代码检查工具的原因 我的代码总会报错 报错的内容还都是因为少了空格多了分号之类的... 
     这也让我重新学习了一把webstorm的基础设置
    Settings-->Editor-->Code Style-->Javascript 可以调整代码格式化(Shift+Ctrl+l)的方法 简单的调整之后报错就少多了 再有就是不能使用双引号而使用单引号 行尾不能有;的问题了 通常在Settings-->Editor-->Live Templates下可以更改一下也是可以的
+3. server/index.js
+  
