@@ -3,7 +3,7 @@ const router = require('koa-router')()
 const path = require('path')
 const util = require('util')
 // const db = require('../DB')
-router.prefix(path.format({ root: '/', name: 'api' }))
+router.prefix('/api')
 // 用户登陆
 router.post('/login', async ctx => {
   console.log('收到登陆请求')
