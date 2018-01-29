@@ -69,13 +69,13 @@ module.exports =
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("path");
+module.exports = require("koa-router");
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("koa-router");
+module.exports = require("path");
 
 /***/ }),
 /* 2 */
@@ -136,22 +136,25 @@ const start = async () => {
   app.use(json());
   app.use(logger());
   app.use(async (ctx, next) => {
-    if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
+    if (ctx.request.method === 'POST') {
       next();
-    } else if (/asyncData[\/\\]+/.test(ctx.request.url)) {
-      next();
-    } else {
-      await next();
-      ctx.status = 200; // koa defaults to 404 when it sees that status is unset
-      return new Promise((resolve, reject) => {
-        ctx.res.on('close', resolve);
-        ctx.res.on('finish', resolve);
-        nuxt.render(ctx.req, ctx.res, promise => {
-          // nuxt.render passes a rejected promise into callback on error.
-          promise.then(resolve).catch(reject);
-        });
-      });
     }
+    /*if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
+      next()
+    } else if (/asyncData[\/\\]+/.test(ctx.request.url)) {
+      next()
+    } */else {
+        await next();
+        ctx.status = 200; // koa defaults to 404 when it sees that status is unset
+        return new Promise((resolve, reject) => {
+          ctx.res.on('close', resolve);
+          ctx.res.on('finish', resolve);
+          nuxt.render(ctx.req, ctx.res, promise => {
+            // nuxt.render passes a rejected promise into callback on error.
+            promise.then(resolve).catch(reject);
+          });
+        });
+      }
   });
 
   app.use(data1.routes(), data1.allowedMethods());
@@ -208,11 +211,24 @@ module.exports = require("koa-logger");
 "use strict";
 
 
-const router = __webpack_require__(1)();
-const path = __webpack_require__(0);
+const router = __webpack_require__(0)();
+const path = __webpack_require__(1);
 const util = __webpack_require__(2);
 router.prefix(path.format({ root: '/', name: 'api' }));
-router.all(path.format({ root: '/', name: 'json' }), async ctx => {
+router.post(path.format({ root: '/', name: 'json' }), async ctx => {
+  ctx.body = {
+    code: 200,
+    data: {
+      name: 'zp+field',
+      Color: 'rab(33,33,33)',
+      loading: true
+    },
+    name: 'zp+field',
+    Color: 'rab(33,33,33)',
+    loading: true
+  };
+});
+router.post(path.format({ root: '/', name: 'asyncData' }), async ctx => {
   ctx.body = {
     code: 200,
     data: {
@@ -234,8 +250,8 @@ module.exports = router;
 "use strict";
 
 
-const router = __webpack_require__(1)();
-const path = __webpack_require__(0);
+const router = __webpack_require__(0)();
+const path = __webpack_require__(1);
 const util = __webpack_require__(2);
 // const db = require('../DB')
 router.prefix(path.format({ root: '/', name: 'api' }));
@@ -258,8 +274,8 @@ module.exports = router;
 "use strict";
 
 
-const router = __webpack_require__(1)();
-const path = __webpack_require__(0);
+const router = __webpack_require__(0)();
+const path = __webpack_require__(1);
 const util = __webpack_require__(2);
 router.prefix(path.format({ root: '/api', name: 'start' }));
 router.all(path.format({ root: '/', name: 'data' }), async ctx => {
@@ -278,8 +294,8 @@ module.exports = router;
 "use strict";
 
 
-const router = __webpack_require__(1)();
-const path = __webpack_require__(0);
+const router = __webpack_require__(0)();
+const path = __webpack_require__(1);
 const util = __webpack_require__(2);
 router.prefix(path.format({ root: '/', name: 'api' }));
 router.get(path.format({ root: '/', name: 'data1' }), async ctx => {

@@ -41,11 +41,14 @@ const start = async () => {
   app.use(json());
   app.use(logger());
   app.use(async (ctx, next) => {
-    if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
+    if (ctx.request.method === 'POST') {
+      next()
+    }
+    /*if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
       next()
     } else if (/asyncData[\/\\]+/.test(ctx.request.url)) {
       next()
-    } else {
+    } */ else {
       await next()
       ctx.status = 200 // koa defaults to 404 when it sees that status is unset
       return new Promise((resolve, reject) => {

@@ -4,8 +4,6 @@ import path from 'path'
 import _axios from 'axios'
 import { Message } from 'element-ui'
 
-const pathReturn = url => path.join(...url.split('/'))
-
 const obj2params = obj => {
   let result = ''
   for (let item in obj) {
@@ -15,15 +13,15 @@ const obj2params = obj => {
 }
 
 export const post = (url, paramsObj) => {
-  return _fetch(pathReturn(url), 'POST', paramsObj)
+  return _fetch(path.join(url), 'POST', paramsObj)
 }
 
 export const get = (url, paramsObj) => {
-  return _fetch(pathReturn(url), 'GET', paramsObj)
+  return _fetch(path.join(url), 'GET', paramsObj)
 }
 
 export const _fetch = (url, method, paramsObj) => {
-  return fetch(pathReturn(url), {
+  return fetch(path.join(url), {
     method: method,
     /* 携带cookie */
     credentials: 'include',
@@ -37,10 +35,10 @@ export const _fetch = (url, method, paramsObj) => {
     res.text().then(text => {
       Message({
         type: 'error',
-        message: `${pathReturn(url)}-->${text}-->${res.status}`,
+        message: `${path.join(url)}-->${text}-->${res.status}`,
         duration: 5 * 1000
       })
-      return Promise.reject(new Error(`${pathReturn(url)}-->${text}-->${res.status}`))
+      return Promise.reject(new Error(`${path.join(url)}-->${text}-->${res.status}`))
     })
   })
 }
@@ -50,9 +48,11 @@ _axios.defaults.timeout = 5000
 _axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 export const axios = {
   post(url, data) {
+    console.log(url)
+    console.log(path.join(url))
     return _axios({
       method: 'post',
-      url: pathReturn(url),
+      url: path.join(url),
       data: data,
       proxy: {
         host: '127.0.0.1',
@@ -63,7 +63,7 @@ export const axios = {
   get(url, data) {
     return _axios({
       method: 'get',
-      url: pathReturn(url),
+      url: path.join(url),
       data: data,
       proxy: {
         host: '127.0.0.1',
