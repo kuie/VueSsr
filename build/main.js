@@ -209,8 +209,8 @@ module.exports = require("koa-logger");
 const router = __webpack_require__(0)();
 const path = __webpack_require__(1);
 const util = __webpack_require__(2);
-router.prefix(path.format({ root: '/', name: 'api' }));
-router.post(path.format({ root: '/', name: 'json' }), async ctx => {
+router.prefix('/api');
+router.post('/json', async ctx => {
   ctx.body = {
     code: 200,
     data: {
@@ -269,18 +269,18 @@ const router = __webpack_require__(0)();
 const path = __webpack_require__(1);
 const util = __webpack_require__(2);
 // const db = require('../DB')
-router.prefix(path.format({ root: '/', name: 'api' }));
+router.prefix('/api/user');
 // 用户登陆
 router.post('/login', async ctx => {
   console.log('收到登陆请求');
   ctx.body = { code: 200, msg: '登陆成功！' };
 });
 // 用户注册
-router.post(path.join('/register'), async ctx => {
+router.post('/register', async ctx => {
   ctx.body = { code: 200, msg: '注册成功！' };
 });
 // 用户登出
-router.post(path.join('/logout'), async ctx => {
+router.post('/logout', async ctx => {
   ctx.body = { code: 200, msg: '退出登录！' };
 });
 module.exports = router;
