@@ -21,6 +21,7 @@
     </div>
   </div>
 </template>
+
 <script>
   'use strict'
   import { axios, post } from '../util/fetch'

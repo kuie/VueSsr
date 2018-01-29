@@ -29,7 +29,7 @@ module.exports = {
     /*
      ** Run ESLINT on save
      */
-    extend (config, ctx) {
+    extend(config, ctx) {
       if (ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
@@ -49,10 +49,17 @@ module.exports = {
         }
       }
     ],
-    vendor: ['axios']
+    vendor: ['axios'],
+    filenames: {
+      vendor: 'vendor.[hash].js',
+      app: 'app.[hash].js'
+    }
   },
   plugins: [
-    { src: '~plugins/vue-ElementUI', ssr: false }
+    { src: '~plugins/vue-ElementUI', ssr: true }
   ],
-  cache: true
+  cache: true,
+  performance: {
+    perfetch: true
+  }
 }
