@@ -112,12 +112,11 @@ const start = async () => {
 
   // API处理
   const index = __webpack_require__(10);
-  const loginRegister = __webpack_require__(11);
-  const start = __webpack_require__(12);
-  const data1 = __webpack_require__(13);
+  const start = __webpack_require__(11);
+  const user = __webpack_require__(12);
 
   // Import and Set Nuxt.js options
-  let config = __webpack_require__(14);
+  let config = __webpack_require__(13);
   config.dev = !(app.env === 'production');
 
   // Instantiate nuxt.js
@@ -135,31 +134,27 @@ const start = async () => {
   }));
   app.use(json());
   app.use(logger());
+  // 分辨路由请求和接口请求
   app.use(async (ctx, next) => {
-    if (ctx.request.method === 'POST') {
+    // post请求及以api开头的请求进入请请处理阶段，否则默认为是页面请求
+    if (ctx.request.method === 'POST' || /^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
       next();
-    }
-    /*if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
-      next()
-    } else if (/asyncData[\/\\]+/.test(ctx.request.url)) {
-      next()
-    } */else {
-        await next();
-        ctx.status = 200; // koa defaults to 404 when it sees that status is unset
-        return new Promise((resolve, reject) => {
-          ctx.res.on('close', resolve);
-          ctx.res.on('finish', resolve);
-          nuxt.render(ctx.req, ctx.res, promise => {
-            // nuxt.render passes a rejected promise into callback on error.
-            promise.then(resolve).catch(reject);
-          });
+    } else {
+      await next();
+      ctx.status = 200; // koa defaults to 404 when it sees that status is unset
+      return new Promise((resolve, reject) => {
+        ctx.res.on('close', resolve);
+        ctx.res.on('finish', resolve);
+        nuxt.render(ctx.req, ctx.res, promise => {
+          // nuxt.render passes a rejected promise into callback on error.
+          promise.then(resolve).catch(reject);
         });
-      }
+      });
+    }
   });
 
-  app.use(data1.routes(), data1.allowedMethods());
   app.use(index.routes(), index.allowedMethods());
-  app.use(loginRegister.routes(), loginRegister.allowedMethods());
+  app.use(user.routes(), user.allowedMethods());
   app.use(start.routes(), start.allowedMethods());
 
   app.listen(port, host);
@@ -228,7 +223,7 @@ router.post(path.format({ root: '/', name: 'json' }), async ctx => {
     loading: true
   };
 });
-router.post(path.format({ root: '/', name: 'asyncData' }), async ctx => {
+router.post('/asyncData', async ctx => {
   ctx.body = {
     code: 200,
     data: {
@@ -253,17 +248,13 @@ module.exports = router;
 const router = __webpack_require__(0)();
 const path = __webpack_require__(1);
 const util = __webpack_require__(2);
-// const db = require('../DB')
-router.prefix(path.format({ root: '/', name: 'api' }));
-
-router.post(path.format({ root: '/', name: 'login' }), async ctx => {
-  ctx.body = { code: 200, msg: '登陆成功！' };
-});
-router.post(path.format({ root: '/', name: 'register' }), async ctx => {
-  ctx.body = { code: 200, msg: '注册成功！' };
-});
-router.post(path.format({ root: '/', name: 'logout' }), async ctx => {
-  ctx.body = { code: 200, msg: '退出登录！' };
+router.prefix(path.format({ root: '/api', name: 'start' }));
+router.all(path.format({ root: '/', name: 'data' }), async ctx => {
+  ctx.body = {
+    code: 200,
+    msg: '获取成功！',
+    data: [{ color: 'red', val: '红色' }, { color: '#fff', val: '白色' }, { color: 'blue', val: '蓝色' }]
+  };
 });
 module.exports = router;
 
@@ -277,35 +268,25 @@ module.exports = router;
 const router = __webpack_require__(0)();
 const path = __webpack_require__(1);
 const util = __webpack_require__(2);
-router.prefix(path.format({ root: '/api', name: 'start' }));
-router.all(path.format({ root: '/', name: 'data' }), async ctx => {
-  ctx.body = {
-    code: 200,
-    msg: '获取成功！',
-    data: [{ color: 'red', val: '红色' }, { color: '#fff', val: '白色' }, { color: 'blue', val: '蓝色' }]
-  };
+// const db = require('../DB')
+router.prefix(path.format({ root: '/', name: 'api' }));
+// 用户登陆
+router.post('/login', async ctx => {
+  console.log('收到登陆请求');
+  ctx.body = { code: 200, msg: '登陆成功！' };
+});
+// 用户注册
+router.post(path.join('/register'), async ctx => {
+  ctx.body = { code: 200, msg: '注册成功！' };
+});
+// 用户登出
+router.post(path.join('/logout'), async ctx => {
+  ctx.body = { code: 200, msg: '退出登录！' };
 });
 module.exports = router;
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-const router = __webpack_require__(0)();
-const path = __webpack_require__(1);
-const util = __webpack_require__(2);
-router.prefix(path.format({ root: '/', name: 'api' }));
-router.get(path.format({ root: '/', name: 'data1' }), async ctx => {
-  console.log(123);
-  ctx.body = { name: 1231 };
-});
-module.exports = router;
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = {

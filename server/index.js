@@ -17,9 +17,8 @@ const start = async () => {
 
   // API处理
   const index = require('./api/index')
-  const loginRegister = require('./api/login&register')
   const start = require('./api/start')
-  const data1 = require('./api/data1')
+  const user = require('./api/user')
 
   // Import and Set Nuxt.js options
   let config = require('../nuxt.config.js')
@@ -40,15 +39,12 @@ const start = async () => {
   }));
   app.use(json());
   app.use(logger());
+  // 分辨路由请求和接口请求
   app.use(async (ctx, next) => {
-    if (ctx.request.method === 'POST') {
+    // post请求及以api开头的请求进入请请处理阶段，否则默认为是页面请求
+    if (ctx.request.method === 'POST' || /^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
       next()
-    }
-    /*if (/^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
-      next()
-    } else if (/asyncData[\/\\]+/.test(ctx.request.url)) {
-      next()
-    } */ else {
+    } else {
       await next()
       ctx.status = 200 // koa defaults to 404 when it sees that status is unset
       return new Promise((resolve, reject) => {
@@ -62,10 +58,8 @@ const start = async () => {
     }
   })
 
-
-  app.use(data1.routes(), data1.allowedMethods())
   app.use(index.routes(), index.allowedMethods())
-  app.use(loginRegister.routes(), loginRegister.allowedMethods())
+  app.use(user.routes(), user.allowedMethods())
   app.use(start.routes(), start.allowedMethods())
 
   app.listen(port, host)

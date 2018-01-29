@@ -16,7 +16,7 @@ router.post(path.format({ root: '/', name: 'json' }), async ctx => {
     loading: true
   }
 })
-router.post(path.format({ root: '/', name: 'asyncData' }), async ctx => {
+router.post('/asyncData', async ctx => {
   ctx.body = {
     code: 200,
     data: {
