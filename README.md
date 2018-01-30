@@ -124,3 +124,9 @@ import { Nuxt, Builder } from 'nuxt'
 4. 生成文件位置
 5. build下文件作用--->server文件打包
 6. node版本需求的原因（await）为什么不能使用babel转译为低版本js语句
+
+## 项目后续开发内容
+1. koa的session用户状态控制--vuonsocket.io
+2. socket协议传输websocket&&socket.io
+3. webpack打包-->将css和js分离打包输出
+4. 邮件服务器

@@ -21,8 +21,11 @@ const start = async () => {
   const user = require('./api/user')
 
   // Import and Set Nuxt.js options
-  let config = require('../nuxt.config.js')
+  const config = require('../nuxt.config.js')
   config.dev = !(app.env === 'production')
+
+  const IO = require('koa-socket')
+  const io = new IO()
 
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
@@ -39,11 +42,27 @@ const start = async () => {
   }));
   app.use(json());
   app.use(logger());
+
+  io.attach(app)
+  io.use(async (ctx, next) => {
+    let start = new Date()
+    await next()
+    console.log(`response time: ${ new Date() - start }ms`)
+  })
+  io.on('emit_method', (ctx, data) => {
+    console.log(data)
+  })
+
   // 分辨路由请求和接口请求
   app.use(async (ctx, next) => {
     // post请求及以api开头的请求进入请请处理阶段，否则默认为是页面请求
-    if (ctx.request.method === 'POST' || /^[\/\\]+api[\/\\]+/.test(ctx.request.url)) {
-      next()
+    if (ctx.request.method === 'POST' || /^([\/\\]+api[\/\\]+)|(socket\.io)/.test(ctx.request.url)) {
+      if (/^[\/\\]+socket\.io/.test(ctx.request.url)) {
+        console.log('发生socket请求')
+        ctx.body = { id: 1154 }
+      } else {
+        next()
+      }
     } else {
       await next()
       ctx.status = 200 // koa defaults to 404 when it sees that status is unset

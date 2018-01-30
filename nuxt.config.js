@@ -49,14 +49,11 @@ module.exports = {
         }
       }
     ],
-    vendor: ['axios'],
-    filenames: {
-      vendor: 'vendor.[hash].js',
-      app: 'app.[hash].js'
-    }
+    vendor: ['axios', 'vue-socket.io']
   },
   plugins: [
-    { src: '~plugins/vue-ElementUI', ssr: true }
+    { src: '~plugins/vue-ElementUI', ssr: true },
+    { src: '~plugins/socket', ssr: false }
   ],
   cache: true,
   performance: {

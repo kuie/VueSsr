@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <div class="loadingBox" v-if="loading">
+    <div class="loadingBox">
       <div>{{name}}</div>
       <svg viewBox="25 25 50 50">
         <circle class="path" cx="50" cy="50" r="25" :fill="Color" fill-opacity=".2"></circle>
@@ -12,7 +12,8 @@
       <h2 :style="`color:${Color}`" class="loadingBox">Loading...</h2>
       <el-button type="primary" @click="skipAD">跳过广告</el-button>
     </div>
-    <div v-else>
+    <div>
+      <nuxt-link to="/socket" class="el-button el-button--danger">webSocket</nuxt-link>
       <nuxt-link to="/login" class="el-button el-button--primary">登陆</nuxt-link>
       <nuxt-link to="/register" class="el-button el-button--success">注册</nuxt-link>
       <nuxt-link to="/start" class="el-button el-button--success">start</nuxt-link>
