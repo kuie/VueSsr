@@ -23,6 +23,9 @@
       },
       customEmit() {
         console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+      },
+      broadcast(val) {
+        console.log(val)
       }
     },
     methods: {
@@ -33,7 +36,10 @@
         //   socket.emit('msg', { rp: 'fine,thank you' })
         //   console.log(data)
         // })
-        this.$socket.emit('emit_method', this.msg)
+        this.$socket.emit('join', this.msg)
+        this.$options.sockets.msg = (data) => {
+          console.log(data)
+        }
       }
     }
   }
